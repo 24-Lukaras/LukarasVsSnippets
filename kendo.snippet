@@ -1,0 +1,139 @@
+﻿<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Kendo default grid</Title>
+      <Shortcut>kgrid</Shortcut>
+      <Description></Description>
+      <Author>Lukaras</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>type</ID>
+          <ToolTip>Type of displayed data.</ToolTip>
+          <Default>Type</Default>
+        </Literal>
+        <Literal>
+          <ID>gridName</ID>
+          <ToolTip>Name of kendo grid.</ToolTip>
+          <Default>GridName</Default>
+        </Literal>
+        <Literal>
+          <ID>gridHeight</ID>
+          <ToolTip>Height of grid in px.</ToolTip>
+          <Default>500</Default>
+        </Literal>
+        <Literal>
+          <ID>noRecordsMessage</ID>
+          <ToolTip>Message displayed when grid is empty.</ToolTip>
+          <Default>HRHelper.NoRecords(T.NoRecords)</Default>
+        </Literal>
+        <Literal>
+          <ID>area</ID>
+          <ToolTip>Name of MVC area.</ToolTip>
+          <Default>Area</Default>
+        </Literal>
+        <Literal>
+          <ID>controler</ID>
+          <ToolTip>Name of MVC controler.</ToolTip>
+          <Default>ControlerName</Default>
+        </Literal>
+        <Literal>
+          <ID>actionPrefix</ID>
+          <ToolTip>Prefix for all data source actions.</ToolTip>
+          <Default>Prefix</Default>
+        </Literal>
+        <Literal>
+          <ID>defaultEvents</ID>
+          <ToolTip>Default data source events.</ToolTip>
+          <Default>.Events(e => e.Error("dataVizProvider.kendoError").RequestEnd("dataVizProvider.gridRequestEnd"))</Default>
+        </Literal>        
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[
+        (
+            Html.Kendo().Grid<$type$>()
+                .Name("$gridName$")
+                .Columns(columns =>
+                {
+                    //use columns.Bound(x => x.{PropertyName}) to define grid columns
+
+                })
+                .ToolBar(t =>
+                {
+                    //create own kendo template script or change to ClientTemplate()
+                    t.ClientTemplateId("");
+                })
+                .Scrollable(s => s.Height($gridHeight$))
+                .Sortable()
+                .Pageable(p => p.Refresh(true).Responsive(false))
+                .Filterable()
+                .NoRecords(t => t.Template($noRecordsMessage$))
+                .DataSource(ds => ds
+                    .Ajax()
+                    .ServerOperation(false)
+                    .PageSize(30)
+                    .Model(m => m.Id(i => i.Id)) // specifies Id field for kendo grid
+                    .Events(e => e.Error("dataVizProvider.kendoError"))
+                    .Create(re => re.Action("$actionPrefix$_Create", "$controler$", new { area = "$area$" }))
+                    .Read(re => re.Action("$actionPrefix$_Read", "$controler$", new { area = "$area$" }))
+                    .Update(re => re.Action("$actionPrefix$_Update", "$controler$", new { area = "$area$" }))
+                    .Destroy(re => re.Action("$actionPrefix$_Destroy", "$controler$", new { area = "$area$" }))
+                    $defaultEvents$
+                )
+        )    
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+  
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Kendo default window</Title>
+      <Shortcut>kwnd</Shortcut>
+      <Description></Description>
+      <Author>Lukaras</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>wndId</ID>
+          <ToolTip>Id of window.</ToolTip>
+          <Default>temp-wnd</Default>
+        </Literal>
+        <Literal>
+          <ID>wndName</ID>
+          <ToolTip>Name of window.</ToolTip>
+          <Default>Name of window</Default>
+        </Literal>
+        <Literal>
+          <ID>wndWidth</ID>
+          <ToolTip>Width of window.</ToolTip>
+          <Default>600</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[
+        (
+            Html.Kendo().Window()
+                .Name("$wndId$")
+                .Title("$wndName$")
+                .Visible(false)
+                .Modal(true)
+                .Draggable(true)
+                .Width($wndWidth$)
+                .Content("<div class='wnd-content'></div>")
+        )    
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+  
+</CodeSnippets>
